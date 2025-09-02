@@ -14,8 +14,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
                 version = "1.0.0",
                 description = "REST API for E-Learning Platform - Portfolio Project",
                 contact = @Contact(
-                        name = "Your Name",
-                        email = "your.email@example.com",
+                        name = "David Pujol",
+                        email = "davidpujol.work@gmail.com",
                         url = "https://github.com/yourusername"
                 ),
                 license = @License(

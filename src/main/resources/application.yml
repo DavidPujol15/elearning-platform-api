@@ -15,6 +15,10 @@ spring:
       idle-timeout: 600000
       max-lifetime: 1800000
 
+  # Liquibase Configuration
+  liquibase:
+    enabled: false
+
   # JPA Configuration
   jpa:
     hibernate:
