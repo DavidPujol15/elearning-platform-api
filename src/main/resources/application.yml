@@ -2,22 +2,27 @@ spring:
   application:
     name: elearning-platform-api
 
-  # Database Configuration
+  # Database Configuration  
   datasource:
-    url: jdbc:postgresql://localhost:5432/elearning_db
-    username: ${DB_USERNAME:postgres}
-    password: ${DB_PASSWORD:postgres}
-    driver-class-name: org.postgresql.Driver
+    url: jdbc:h2:mem:elearning_db;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password: 
+    driver-class-name: org.h2.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
       connection-timeout: 30000
       idle-timeout: 600000
       max-lifetime: 1800000
+  
+  # H2 Console Configuration (for development)
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+      settings:
+        web-allow-others: false
 
-  # Liquibase Configuration
-  liquibase:
-    enabled: false
 
   # JPA Configuration
   jpa:
@@ -25,7 +30,7 @@ spring:
       ddl-auto: update  # Use 'validate' in production
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
         show_sql: false
         use_sql_comments: true
@@ -44,6 +49,26 @@ spring:
       secret-key: ${JWT_SECRET:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}
       expiration: 86400000 # 24 hours in milliseconds
       refresh-expiration: 604800000 # 7 days in milliseconds
+
+# Hibernate Configuration
+hibernate:
+  default_batch_fetch_size: 25
+  jdbc.batch_size: 25
+  order_inserts: true
+  order_updates: true
+  jdbc.batch_versioned_data: true
+
+  # Statistics (solo para desarrollo)
+  generate_statistics: true
+  session.events.log.LOG_QUERIES_SLOWER_THAN_MS: 100
+
+  # Cache de segundo nivel (opcional)
+  cache:
+    use_second_level_cache: false
+    use_query_cache: false
+
+  # Lazy loading
+  enable_lazy_load_no_trans: false
 
 # Server Configuration
 server:
@@ -76,9 +101,6 @@ logging:
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-  file:
-    name: logs/elearning-platform.log
 
 # OpenAPI/Swagger Configuration
 springdoc:
@@ -108,3 +130,4 @@ app:
   pagination:
     default-page-size: 20
     max-page-size: 100
+
